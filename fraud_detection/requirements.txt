@@ -1,0 +1,9 @@
+click>=8.0.0
+pandas
+scipy
+duckdb
+scikit-learn
+xgboost
+evidently
+bayesian-optimization
+matplotlib
