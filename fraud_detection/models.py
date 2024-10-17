@@ -60,7 +60,7 @@ def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_tes
 
     return pd.DataFrame(results)
 
-def optimize_model() -> Dict[str, float]:
+def optimize_model(X_train: pd.DataFrame, y_train: pd.Series) -> Dict[str, float]:
     """
     Optimize hyperparameters for Gradient Boosting Classifier using Bayesian Optimization.
     """
