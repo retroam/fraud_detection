@@ -14,10 +14,7 @@ from typing import Dict, Tuple
 def create_pipeline(model) -> make_pipeline:
     """Create a machine learning pipeline with imputer, scaler, and given model."""
     return make_pipeline(SimpleImputer(strategy='most_frequent'), StandardScaler(), model)
-    """
-    Create a machine learning pipeline with imputer, scaler, and given model.
-    """
-    return make_pipeline(SimpleImputer(strategy='most_frequent'), StandardScaler(), model)
+  
 
 def get_model(model_type: str) -> make_pipeline:
     """
@@ -76,9 +73,7 @@ def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_tes
 
 def optimize_model(X_train: pd.DataFrame, y_train: pd.Series) -> Dict[str, float]:
     """Optimize hyperparameters for Gradient Boosting Classifier using Bayesian Optimization."""
-    """
-    Optimize hyperparameters for Gradient Boosting Classifier using Bayesian Optimization.
-    """
+ 
     def gbm_eval(n_estimators: float, learning_rate: float, max_depth: float, min_samples_split: float, min_samples_leaf: float, subsample: float) -> float:
         model = create_pipeline(GradientBoostingClassifier(
             n_estimators=int(n_estimators),
