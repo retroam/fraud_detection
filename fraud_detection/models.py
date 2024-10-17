@@ -8,7 +8,7 @@ from bayes_opt import BayesianOptimization
 from sklearn.model_selection import cross_val_score
 import numpy as np
 import pandas as pd
-from typing import Optional, Dict
+from typing import Dict
 
 
 def create_pipeline(model) -> make_pipeline:
@@ -16,6 +16,12 @@ def create_pipeline(model) -> make_pipeline:
     Create a machine learning pipeline with imputer, scaler, and given model.
     """
     return make_pipeline(SimpleImputer(strategy='most_frequent'), StandardScaler(), model)
+
+def get_model(model_type: str):
+    """
+    Get a machine learning model based on the selected model type.
+    """
+    return get_model(model_type)
 
 def train_model(model_type: str):
     """

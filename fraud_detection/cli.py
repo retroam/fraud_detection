@@ -22,6 +22,10 @@ def generate_quality_report(db_path: str, query_file: str, winsorize: bool) -> N
         report = quality_report(data)
         report.to_csv('quality_report.csv', index=False)
         click.echo("Data quality report saved to 'quality_report.csv'")
+    except FileNotFoundError as e:
+        logger.error(f"SQL query file not found: {e}")
+    except ValueError as e:
+        logger.error(f"Invalid model type specified: {e}")
     except Exception as e:
         logger.error(f"Failed to generate quality report: {e}")
 
@@ -40,7 +44,7 @@ def train(model_type: str, save_model: str) -> None:
 
 @cli.command()
 @click.option('--models', default='logistic,gbm,xgb', help='Comma-separated list of models to compare.')
-def compare(models: str) -> None:
+def compare(models: str, display_viz: bool = False) -> None:
     """Compare multiple models"""
     model_list = models.split(',')
     click.echo(f"Comparing models: {', '.join(model_list)}")
