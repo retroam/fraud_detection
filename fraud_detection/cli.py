@@ -37,21 +37,22 @@ def train(model_type: str, save_model: str) -> None:
     click.echo(f"Training {model_type} model...")
     try:
         model, X_train, y_train, X_test, y_test = train_model(model_type)
-        click.echo(f"Model {model_type} trained successfully.")
+        logger.info(f"Model {model_type} trained successfully.")
         # Save model logic here, e.g. using joblib or pickle
     except Exception as e:
         logger.error(f"Failed to train model: {e}")
 
 @cli.command()
 @click.option('--models', default='logistic,gbm,xgb', help='Comma-separated list of models to compare.')
-def compare(models: str, display_viz: bool = False) -> None:
+@click.option('--display_viz', is_flag=True, help='Display visualizations for model comparison.')
+def compare(models: str, display_viz: bool) -> None:
     """Compare multiple models"""
     model_list = models.split(',')
     click.echo(f"Comparing models: {', '.join(model_list)}")
     try:
         comparison_results = compare_models(model_list)
-        click.echo("Model comparison completed.")
-        click.echo(comparison_results)
+        logger.info("Model comparison completed.")
+        logger.info(comparison_results)
     except Exception as e:
         logger.error(f"Failed to compare models: {e}")
 

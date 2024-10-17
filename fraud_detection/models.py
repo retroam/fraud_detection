@@ -21,9 +21,12 @@ def get_model(model_type: str):
     """
     Get a machine learning model based on the selected model type.
     """
-    return get_model(model_type)
-
-def train_model(model_type: str):
+    model_mapping = {
+        'logistic': create_pipeline(LogisticRegression()),
+        'gbm': create_pipeline(GradientBoostingClassifier()),
+        'xgb': create_pipeline(XGBClassifier())
+    }
+    return model_mapping.get(model_type)
     """
     Train a fraud detection model based on the selected model type.
     """
