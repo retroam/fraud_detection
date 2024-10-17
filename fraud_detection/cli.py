@@ -1,6 +1,6 @@
 import click
 from fraud_detection.data import load_data, quality_report
-from fraud_detection.models import train_model, compare_models, optimize_model
+from fraud_detection.models import get_model, compare_models, optimize_model
 from fraud_detection.utils import setup_logger
 
 logger = setup_logger()
