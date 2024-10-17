@@ -3,3 +3,4 @@
 *.egg-info
 .venv
 .ipynb_checkpoints
+*.db
