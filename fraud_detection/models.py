@@ -28,7 +28,7 @@ def train_model(model_type: str):
     }
     return model_mapping.get(model_type)
 
-def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_test: pd.Series) -> pd.DataFrame:
+def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_test: pd.Series, display_viz: bool = False) -> pd.DataFrame:
     """
     Compare the performance of multiple trained models.
     """
@@ -43,19 +43,20 @@ def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_tes
         precision, recall, _ = precision_recall_curve(y_test, y_pred_proba)
         results.append({'model': name, 'avg_precision': avg_precision})
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(fpr, tpr, label=f'{name} ROC Curve')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.legend()
-        plt.show()
+        if display_viz:
+            plt.figure(figsize=(10, 5))
+            plt.plot(fpr, tpr, label=f'{name} ROC Curve')
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.legend()
+            plt.show()
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(recall, precision, label=f'{name} Precision-Recall Curve')
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.legend()
-        plt.show()
+            plt.figure(figsize=(10, 5))
+            plt.plot(recall, precision, label=f'{name} Precision-Recall Curve')
+            plt.xlabel('Recall')
+            plt.ylabel('Precision')
+            plt.legend()
+            plt.show()
 
     return pd.DataFrame(results)
 
