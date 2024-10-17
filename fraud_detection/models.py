@@ -27,6 +27,8 @@ def get_model(model_type: str) -> make_pipeline:
         'xgb': create_pipeline(XGBClassifier())
     }
     return model_mapping.get(model_type)
+
+def train_model(model_type: str) -> Tuple:
     """
     Train a fraud detection model based on the selected model type.
     """
