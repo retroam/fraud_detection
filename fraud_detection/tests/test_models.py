@@ -20,7 +20,7 @@ class TestModels(unittest.TestCase):
         y_test = pd.Series([0, 1, 0, 1])
         model = create_pipeline(LogisticRegression()).fit(X_test, y_test)
         models: Dict[str, LogisticRegression] = {'LogisticRegression': model}
-        results = compare_models(models, X_test, y_test)
+        results = compare_models(models, X_test, y_test, display_viz=False)
         self.assertIsInstance(results, pd.DataFrame)
         self.assertGreater(len(results), 0)
 

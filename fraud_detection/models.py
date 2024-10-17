@@ -8,16 +8,26 @@ from bayes_opt import BayesianOptimization
 from sklearn.model_selection import cross_val_score
 import numpy as np
 import pandas as pd
-from typing import Optional, Dict
+from typing import Dict, Tuple
 
 
 def create_pipeline(model) -> make_pipeline:
-    """
-    Create a machine learning pipeline with imputer, scaler, and given model.
-    """
+    """Create a machine learning pipeline with imputer, scaler, and given model."""
     return make_pipeline(SimpleImputer(strategy='most_frequent'), StandardScaler(), model)
+  
 
-def train_model(model_type: str):
+def get_model(model_type: str) -> make_pipeline:
+    """
+    Get a machine learning model based on the selected model type.
+    """
+    model_mapping = {
+        'logistic': create_pipeline(LogisticRegression()),
+        'gbm': create_pipeline(GradientBoostingClassifier()),
+        'xgb': create_pipeline(XGBClassifier())
+    }
+    return model_mapping.get(model_type)
+
+def train_model(model_type: str) -> Tuple:
     """
     Train a fraud detection model based on the selected model type.
     """
@@ -28,7 +38,8 @@ def train_model(model_type: str):
     }
     return model_mapping.get(model_type)
 
-def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_test: pd.Series) -> pd.DataFrame:
+def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_test: pd.Series,
+                   display_viz: bool = False) -> pd.DataFrame:
     """
     Compare the performance of multiple trained models.
     """
@@ -43,26 +54,26 @@ def compare_models(models: Dict[str, make_pipeline], X_test: pd.DataFrame, y_tes
         precision, recall, _ = precision_recall_curve(y_test, y_pred_proba)
         results.append({'model': name, 'avg_precision': avg_precision})
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(fpr, tpr, label=f'{name} ROC Curve')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.legend()
-        plt.show()
+        if display_viz:
+            plt.figure(figsize=(10, 5))
+            plt.plot(fpr, tpr, label=f'{name} ROC Curve')
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.legend()
+            plt.show()
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(recall, precision, label=f'{name} Precision-Recall Curve')
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.legend()
-        plt.show()
+            plt.figure(figsize=(10, 5))
+            plt.plot(recall, precision, label=f'{name} Precision-Recall Curve')
+            plt.xlabel('Recall')
+            plt.ylabel('Precision')
+            plt.legend()
+            plt.show()
 
     return pd.DataFrame(results)
 
-def optimize_model() -> Dict[str, float]:
-    """
-    Optimize hyperparameters for Gradient Boosting Classifier using Bayesian Optimization.
-    """
+def optimize_model(X_train: pd.DataFrame, y_train: pd.Series) -> Dict[str, float]:
+    """Optimize hyperparameters for Gradient Boosting Classifier using Bayesian Optimization."""
+ 
     def gbm_eval(n_estimators: float, learning_rate: float, max_depth: float, min_samples_split: float, min_samples_leaf: float, subsample: float) -> float:
         model = create_pipeline(GradientBoostingClassifier(
             n_estimators=int(n_estimators),

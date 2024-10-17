@@ -2,3 +2,6 @@
 *.pyc
 *.egg-info
 .venv
+.ipynb_checkpoints
+*.db
+.DS_Store
