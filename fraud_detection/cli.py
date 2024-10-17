@@ -13,7 +13,8 @@ def cli() -> None:
 @cli.command()
 @click.option('--db_path', default='company_database.db', help='Path to DuckDB database.')
 @click.option('--query_file', default='data.sql', help='Path to SQL query file.')
-@click.option('--winsorize', default=False, is_flag=True, help='Option to winsorize the data.')
+@click.option('--winsorize', default=False, is_flag=True,
+              help='Option to winsorize the data.')
 def generate_quality_report(db_path: str, query_file: str, winsorize: bool) -> None:
     """Generate a data quality report"""
     click.echo(f"Generating data quality report from {db_path}...")
@@ -30,7 +31,8 @@ def generate_quality_report(db_path: str, query_file: str, winsorize: bool) -> N
         logger.error(f"Failed to generate quality report: {e}")
 
 @cli.command()
-@click.option('--model_type', default='logistic', type=click.Choice(['logistic', 'gbm', 'xgb']), help='Type of model to train.')
+@click.option('--model_type', default='logistic', type=click.Choice(['logistic', 'gbm', 'xgb']),
+              help='Type of model to train.')
 @click.option('--save_model', default='model.pkl', help='Filename to save the trained model.')
 def train(model_type: str, save_model: str) -> None:
     """Train a fraud detection model"""
@@ -43,7 +45,8 @@ def train(model_type: str, save_model: str) -> None:
         logger.error(f"Failed to train model: {e}")
 
 @cli.command()
-@click.option('--models', default='logistic,gbm,xgb', help='Comma-separated list of models to compare.')
+@click.option('--models', default='logistic,gbm,xgb',
+              help='Comma-separated list of models to compare.')
 @click.option('--display_viz', is_flag=True, help='Display visualizations for model comparison.')
 def compare(models: str, display_viz: bool) -> None:
     """Compare multiple models"""
