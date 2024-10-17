@@ -11,7 +11,7 @@ def cli() -> None:
     pass
 
 @cli.command()
-@click.option('--db_path', default='interview_database.db', help='Path to DuckDB database.')
+@click.option('--db_path', default='company_database.db', help='Path to DuckDB database.')
 @click.option('--query_file', default='data.sql', help='Path to SQL query file.')
 @click.option('--winsorize', default=False, is_flag=True, help='Option to winsorize the data.')
 def generate_quality_report(db_path: str, query_file: str, winsorize: bool) -> None:

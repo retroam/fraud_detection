@@ -9,10 +9,15 @@ def load_data(db_path: str, query_file: str, winsorize_data: bool = False) -> pd
     """
     Load data from a SQL database and optionally winsorize.
     """
+    con = duckdb.connect()
+    con.execute("INSTALL 'sqlite'")
+    con.execute("LOAD 'sqlite'");
     try:
         with open(query_file, 'r') as file:
             query = file.read()
+        logger.info(f"Loading data from {db_path} with query: {query}")
         con = duckdb.connect(database=db_path, read_only=True)
+
         data = con.execute(query).fetchdf()
         if winsorize_data:
             data = _winsorize_data(data)
